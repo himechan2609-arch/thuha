@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phạm Hải Thu Hà — Portfolio 🌷</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Nhúng liên kết trực tiếp tới file style.css -->
+<link rel="stylesheet" href="style.css">
+
+<!-- Ghi đè bố cục phần bài tập thành lưới 2 cột cố định (1-2 / 3-4 / 5-6) -->
+<style>
+  .work-masonry{
+    column-count: initial !important;
+    columns: initial !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 24px !important;
+  }
+  .work-masonry .work-card{
+    break-inside: avoid;
+    margin: 0 !important;
+  }
+  @media (max-width: 760px){
+    .work-masonry{ grid-template-columns: 1fr !important; }
+  }
+
+  /* ===== Nút xem quy trình chi tiết + modal ===== */
+  .work-card{ display: flex; flex-direction: column; }
+  .detail-btn{
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 10px; padding: 10px 16px; border-radius: 999px;
+    border: 1.5px solid #f0b8cc; background: #fff5f9; color: #c23b73;
+    font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 0.84rem;
+    cursor: pointer; align-self: flex-start;
+    transition: transform 0.3s cubic-bezier(.3,1.4,.5,1), background 0.3s ease;
+  }
+  .detail-btn:hover{ transform: translateY(-3px) scale(1.03); background: #ffe4ee; }
+
+  .flow-overlay{
+    position: fixed; inset: 0; background: rgba(60, 30, 45, 0.45);
+    backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center;
+    z-index: 999; padding: 20px; opacity: 0; transition: opacity 0.35s ease;
+  }
+  .flow-overlay.show{ display: flex; }
+  .flow-overlay.in{ opacity: 1; }
+
+  .flow-modal{
+    background: #fffaf6; border-radius: 26px; max-width: 480px; width: 100%;
+    max-height: 82vh; overflow-y: auto; padding: 26px 26px 30px;
+    box-shadow: 0 30px 60px -20px rgba(120, 40, 80, 0.35);
+    transform: translateY(24px) scale(0.96); opacity: 0;
+    transition: transform 0.4s cubic-bezier(.2,.8,.3,1.2), opacity 0.4s ease;
+    position: relative;
+  }
+  .flow-overlay.in .flow-modal{ transform: translateY(0) scale(1); opacity: 1; }
+
+  .flow-close{
+    position: absolute; top: 14px; right: 14px; width: 34px; height: 34px; border-radius: 50%;
+    border: none; background: #ffe4ee; color: #c23b73; font-size: 1.05rem; font-weight: 700;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: transform 0.3s ease;
+  }
+  .flow-close:hover{ transform: rotate(90deg); }
+
+  .flow-title-bubble{
+    background: linear-gradient(135deg, #ffdcea, #ffe9cf);
+    border-radius: 20px 20px 20px 6px;
+    padding: 16px 20px; margin: 6px 30px 18px 0;
+    font-family: 'Quicksand', sans-serif; font-weight: 800; color: #7a2c52;
+    font-size: 1.02rem; line-height: 1.5;
+  }
+
+  .flow-steps{ list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .flow-steps li{
+    display: flex; align-items: center; gap: 12px;
+    background: #fff; border: 1.5px solid #ffe0ec; border-radius: 14px;
+    padding: 12px 16px; font-family: 'Quicksand', sans-serif; font-weight: 600; color: #5c3350;
+    font-size: 0.92rem;
+  }
+  .flow-steps li .flow-num{
+    flex: none; width: 26px; height: 26px; border-radius: 50%;
+    background: linear-gradient(135deg, #ff9ec0, #ffcf9e); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.78rem; font-weight: 800;
+  }
+
+  /* ===== Footer copyright ===== */
+  .copyright-footer{
+    text-align: center; padding: 30px 20px 40px;
+    font-family: 'Quicksand', sans-serif; color: #7a6070;
+  }
+  .copyright-footer .cf-name{
+    font-size: 1.05rem; color: #c23b73; margin: 0 0 8px;
+  }
+  .copyright-footer .cf-line{
+    margin: 3px 0; font-size: 0.84rem; line-height: 1.6;
+  }
+  .copyright-footer .cf-copy{
+    margin-top: 10px; padding-top: 10px; border-top: 1px dashed #f0c3d8;
+    font-size: 0.78rem; opacity: 0.85;
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <aside class="sidebar">
+    <span class="passport-badge">🌷 Portfolio</span>
+    <div class="avatar-wrap">
+      <div class="avatar">
+        <img src="thuha.jpg" alt="Avatar" style="width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 50%;"
+             onerror="this.style.display='none'; this.parentElement.innerHTML+='TH';">
+      </div>
+    </div>
+    <h1 class="side-name">Phạm Hải<br>Thu Hà</h1>
+    <p class="side-sub">Kinh tế Quốc tế</p>
+    <span class="side-chip">MSV: 25050896</span>
+    <span class="side-chip">ĐH Kinh tế - ĐHQGHN</span>
+
+    <ul class="side-nav">
+      <li><a href="#trang-bia" class="nav-link active"><span class="dot"></span>Trang bìa</a></li>
+      <li><a href="#bai-tap" class="nav-link"><span class="dot"></span>Bài tập</a></li>
+      <li><a href="#tong-ket" class="nav-link"><span class="dot"></span>Tổng kết</a></li>
+    </ul>
+
+    <div class="side-footer">
+      <a href="https://drive.google.com/drive/folders/1xURIUSXQY7zNarGjJpn5b52b9mO7bxFn?usp=drive_link" class="drive-btn">📁 Tổng hợp bài tập</a>
+      <p class="side-stamp">Website có sử dụng AI hỗ trợ tối ưu trên tinh thần tuân thủ liêm chính học thuật</p>
+    </div>
+  </aside>
+
+  <main>
+
+    <section id="trang-bia" class="postcard hero-postcard reveal">
+      <div class="tape tl"></div><div class="tape tr"></div>
+      <span class="eyebrow">🌷 Portfolio cá nhân</span>
+      <span class="greet-en">Nice to meet you!</span>
+      <h1>Xin chào, tôi là <span>Phạm Hải Thu Hà</span></h1>
+      <p>Sinh viên ngành <b>Kinh tế quốc tế</b> tại <b>Trường Đại học Kinh tế - Đại học Quốc gia Hà Nội</b>. Portfolio này là nơi tôi ghi lại hành trình làm quen với công nghệ số trong học kỳ đầu tiên - từ những thao tác tưởng chừng đơn giản như sắp xếp tệp tin, đến việc tập vận dụng trí tuệ nhân tạo vào tra cứu số liệu và trình bày ý tưởng.</p>
+      <div class="intro-grid">
+        <div class="intro-card">
+          <h3>💗 Sở thích</h3>
+          <p>Tôi yêu thích việc học ngôn ngữ và tìm tòi những điều mới lạ từ những nền văn hóa khác nhau. Đồng thời là một sinh viên thuộc khối ngành kinh tế, tôi cũng dần tự hình thành cho mình thói quen cập nhật các tin tức về logistics và chuỗi cung ứng hay thị trường tài chính. Tôi tin rằng sự tích lũy kiến thức qua từng ngày là một thói quen đúng đắn để phát triển bản thân.</p>
+        </div>
+        <div class="intro-card">
+          <h3>🎯 Mục tiêu môn học</h3>
+          <p>Mục tiêu của tôi khi học môn này là làm quen và dần làm chủ các công cụ số, biến AI thành một trợ lý đắc lực trong việc tra cứu số liệu, phân tích xu hướng và trình bày báo cáo một cách trực quan, đồng thời luôn đảm bảo sử dụng công nghệ minh bạch, trung thực và có trách nhiệm.</p>
+        </div>
+      </div>
+      <p class="quote-en">"Technology is the bridge to the future." <span style="opacity:.7; font-weight:600;">— Meg Whitman</span><br><span style="font-style:normal;">“Công nghệ là cầu nối giữa hiện tại và tương lai.”</span></p>
+    </section>
+
+    <section id="bai-tap" class="postcard reveal">
+      <div class="tape tr"></div>
+      <div class="section-title"><span class="badge-num">01</span><h2>Hệ thống bài tập cá nhân</h2></div>
+      <div class="work-masonry">
+
+        <div class="work-card reveal">
+          <span class="idx">01.</span>
+          <h3>🌷 Máy tính và các thiết bị ngoại vi</h3>
+          <div class="goal-block">
+            <p class="goal-line"><span class="goal-label">🎯 Mục tiêu</span>Xây dựng nền tảng vững chắc trong việc quản lý dữ liệu, hình thành thói quen lưu trữ báo cáo và số liệu học tập một cách khoa học.</p>
+            <p class="goal-line"><span class="goal-label result">🏆 Thành quả</span>Sắp xếp được hệ thống thư mục rõ ràng theo từng môn học, thao tác nhanh nhạy với các phím tắt hữu ích.</p>
+          </div>
+          <button type="button" class="detail-btn" data-flow="flow-1">📋 Tóm tắt quy trình thực hiện</button>
+          <a href="https://drive.google.com/file/d/1dSmKaRFZxdUkQ-oEbYom-aEmNXAqfJDj/view?usp=drive_link" target="_blank" rel="noopener" class="work-link-btn">📁 Xem chi tiết quá trình thực hiện</a>
+        </div>
+
+        <div class="work-card reveal">
+          <span class="idx">02.</span>
+          <h3>🌷 Khai thác dữ liệu và thông tin</h3>
+          <div class="goal-block">
+            <p class="goal-line"><span class="goal-label">🎯 Mục tiêu</span>Rèn khả năng tra cứu các nguồn dữ liệu kinh tế, tài chính đáng tin cậy phục vụ cho việc học và nghiên cứu.</p>
+            <p class="goal-line"><span class="goal-label result">🏆 Thành quả</span>Tổng hợp được bộ tài liệu tham khảo uy tín, biết cách kiểm chứng độ chính xác của số liệu trước khi trích dẫn.</p>
+          </div>
+          <button type="button" class="detail-btn" data-flow="flow-2">📋 Tóm tắt quy trình thực hiện</button>
+          <a href="https://drive.google.com/file/d/19AUWYTCH7aczht-4u4dHkgkKiOwlhQYk/view?usp=drive_link" target="_blank" rel="noopener" class="work-link-btn">📁 Xem chi tiết quá trình thực hiện</a>
+        </div>
+
+        <div class="work-card reveal">
+          <span class="idx">03.</span>
+          <h3>🌷 Tổng quan về trí tuệ nhân tạo</h3>
+          <div class="goal-block">
+            <p class="goal-line"><span class="goal-label">🎯 Mục tiêu</span>Luyện kỹ năng đặt câu lệnh rõ ràng, đủ dữ kiện để AI hỗ trợ phân tích số liệu và giải thích các khái niệm kinh tế phức tạp.</p>
+            <p class="goal-line"><span class="goal-label result">🏆 Thành quả</span>Xây dựng bộ prompt mẫu phục vụ việc học, cải thiện đáng kể chất lượng và độ chính xác của phản hồi từ AI.</p>
+          </div>
+          <button type="button" class="detail-btn" data-flow="flow-3">📋 Tóm tắt quy trình thực hiện</button>
+          <a href="https://drive.google.com/file/d/1jraffWd_V3zO5m13TDLRJhX8yh-z9H2Z/view?usp=drive_link" target="_blank" rel="noopener" class="work-link-btn">📁 Xem chi tiết quá trình thực hiện</a>
+        </div>
+
+        <div class="work-card reveal">
+          <span class="idx">04.</span>
+          <h3>🌷 Giao tiếp và hợp tác trong môi trường số</h3>
+          <div class="goal-block">
+            <p class="goal-line"><span class="goal-label">🎯 Mục tiêu</span>Phối hợp hiệu quả với các thành viên trong nhóm khi cùng thực hiện bài tập, đề án phân tích kinh tế.</p>
+            <p class="goal-line"><span class="goal-label result">🏆 Thành quả</span>Sử dụng thành thạo công cụ cộng tác để phân chia công việc, theo dõi tiến độ và lưu trữ tài liệu chung minh bạch.</p>
+          </div>
+          <button type="button" class="detail-btn" data-flow="flow-4">📋 Tóm tắt quy trình thực hiện</button>
+          <a href="https://drive.google.com/file/d/1ZHFPaUqB_SCkyNIuB9DqrvGuraWbp7Ei/view?usp=drive_link" target="_blank" rel="noopener" class="work-link-btn">📁 Xem chi tiết quá trình thực hiện</a>
+        </div>
+
+        <div class="work-card reveal">
+          <span class="idx">05.</span>
+          <h3>🌷 Sáng tạo nội dung số</h3>
+          <div class="goal-block">
+            <p class="goal-line"><span class="goal-label">🎯 Mục tiêu</span>Ứng dụng AI tạo sinh để trực quan hóa số liệu, thiết kế báo cáo và bài trình bày sinh động, dễ hiểu hơn.</p>
+            <p class="goal-line"><span class="goal-label result">🏆 Thành quả</span>Hoàn thiện sản phẩm trình bày có tính thẩm mỹ cao, biết kiểm chứng lại thông tin AI cung cấp trước khi sử dụng.</p>
+          </div>
+          <button type="button" class="detail-btn" data-flow="flow-5">📋 Tóm tắt quy trình thực hiện</button>
+          <a href="https://drive.google.com/file/d/1e5IQCxvhnhAnRKM8oC1_lbNqXNo6R78v/view?usp=drive_link" target="_blank" rel="noopener" class="work-link-btn">📁 Xem chi tiết quá trình thực hiện</a>
+        </div>
+
+        <div class="work-card reveal">
+          <span class="idx">06.</span>
+          <h3>🌷 An toàn và liêm chính học thuật trong môi trường số</h3>
+          <div class="goal-block">
+            <p class="goal-line"><span class="goal-label">🎯 Mục tiêu</span>Hiểu rõ giới hạn của AI, đảm bảo tính trung thực và minh bạch khi ứng dụng công nghệ vào học thuật.</p>
+            <p class="goal-line"><span class="goal-label result">🏆 Thành quả</span>Hình thành thói quen kiểm chứng thông tin, trích dẫn rõ nguồn hỗ trợ từ AI trong mọi bài làm.</p>
+          </div>
+          <button type="button" class="detail-btn" data-flow="flow-6">📋 Tóm tắt quy trình thực hiện</button>
+          <a href="https://drive.google.com/file/d/1EGpM22I8qU9ozSoSOFpX4aa2-3L9N-Qx/view?usp=drive_link" target="_blank" rel="noopener" class="work-link-btn">📁 Xem chi tiết quá trình thực hiện</a>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="tong-ket" class="postcard summary-postcard reveal">
+      <div class="tape tl"></div><div class="tape tr"></div>
+      <div class="section-title"><span class="badge-num">02</span><h2>Nhìn nhận &amp; Trải nghiệm học tập</h2></div>
+
+      <div class="summary-layout">
+        <div class="summary-side reveal">
+          <p class="quote-main">"Con số biết kể chuyện, nhưng chính con người mới là người viết nên câu chuyện đó."</p>
+          <div class="stat-col">
+            <div class="stat-item"><span class="num">06/06</span><span class="label">Bài tập<br>hoàn thành</span></div>
+            <div class="stat-item"><span class="num">100%</span><span class="label">Nhiệt huyết<br>&amp; cố gắng</span></div>
+            <div class="stat-item"><span class="num">A+</span><span class="label">Mục tiêu<br>học phần</span></div>
+          </div>
+        </div>
+
+        <div class="reflect-journal">
+          <div class="reflect-entry reveal">
+            <div class="entry-head"><span class="entry-num">01</span><h3>🔑 Bài học cốt lõi</h3></div>
+            <p>Qua môn học, tôi nhận ra công nghệ và AI là công cụ hỗ trợ đắc lực, nhưng khả năng tư duy phản biện, đọc hiểu và diễn giải số liệu mới là điều quyết định giá trị của một báo cáo kinh tế. Máy móc có thể tính toán nhanh, nhưng góc nhìn và sự nhạy bén với thị trường vẫn cần đến con người.</p>
+          </div>
+          <div class="reflect-entry reveal">
+            <div class="entry-head"><span class="entry-num">02</span><h3>🌱 Sự thay đổi của bản thân</h3></div>
+            <p>Nhìn lại cả chặng đường, tôi thấy bản thân đã tự tin hơn rất nhiều khi làm việc với các công cụ số. Từ một người còn khá bỡ ngỡ với công nghệ, tôi dần biết cách khai thác AI để hỗ trợ việc học, đồng thời hiểu rõ giới hạn để không phụ thuộc hoàn toàn vào nó.</p>
+          </div>
+          <div class="reflect-entry reveal">
+            <div class="entry-head"><span class="entry-num">03</span><h3>💭 Cảm nghĩ sau khi hoàn thiện</h3></div>
+            <p>Hoàn thành portfolio này, tôi cảm thấy rất tự hào khi không chỉ tạo dựng được không gian thể hiện năng lực cá nhân, mà còn có cơ hội nhìn lại trọn vẹn hành trình nỗ lực của bản thân. Dù các bài tập không quá đánh đố, học phần Nhập môn Công nghệ số và Ứng dụng Trí tuệ nhân tạo đòi hỏi ở người học sự kiên trì và tỉ mỉ nhất định. Chính vì vậy, tôi xin gửi lời biết ơn đến các thầy cô giảng viên đã xây dựng một lộ trình học đầy tính thực tiễn, giúp lý thuyết không còn nằm trên sách vở mà thực sự gắn liền với ứng dụng đời sống.</p>
+          </div>
+          <div class="reflect-entry reveal">
+            <div class="entry-head"><span class="entry-num">04</span><h3>🌟 Định hướng tương lai</h3></div>
+            <p>Từ những nền tảng công nghệ số đã tích lũy, tôi hướng tới việc tiếp tục trau dồi các kỹ năng số thiết yếu, đặc biệt là năng lực khai thác số liệu và trình bày báo cáo chuyên nghiệp, chỉn chu hơn trong những học kỳ tiếp theo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="copyright-footer">
+      <p class="cf-name"><strong>Phạm Hải Thu Hà</strong></p>
+      <p class="cf-line">Sinh viên K70 Kinh tế Quốc tế - VNU-UEB</p>
+      <p class="cf-line">Email: p.haithuha.hp.0901@gmail.com</p>
+      <p class="cf-line cf-copy">Copyright © Phạm Hải Thu Hà. Sản phẩm phục vụ môn học VNU1001</p>
+      <p class="cf-line">Lớp học phần: VNU1001_E252044</p>
+    </footer>
+
+  </main>
+</div>
+
+<!-- ===== Modal quy trình chi tiết ===== -->
+<div class="flow-overlay" id="flow-1">
+  <div class="flow-modal">
+    <button type="button" class="flow-close" data-close>✕</button>
+    <div class="flow-title-bubble">Bài 1: Quy trình thực hiện các thao tác cơ bản với tệp tin và thư mục</div>
+    <ol class="flow-steps">
+      <li><span class="flow-num">1</span>Truy cập ổ đĩa</li>
+      <li><span class="flow-num">2</span>Tạo thư mục mới</li>
+      <li><span class="flow-num">3</span>Tạo tệp tin văn bản</li>
+      <li><span class="flow-num">4</span>Đổi tên tệp tin</li>
+      <li><span class="flow-num">5</span>Tạo thư mục con</li>
+      <li><span class="flow-num">6</span>Sao chép tệp tin</li>
+      <li><span class="flow-num">7</span>Di chuyển tệp tin</li>
+      <li><span class="flow-num">8</span>Xóa tệp tin</li>
+      <li><span class="flow-num">9</span>Xóa vĩnh viễn</li>
+      <li><span class="flow-num">10</span>Khôi phục dữ liệu</li>
+    </ol>
+  </div>
+</div>
+
+<div class="flow-overlay" id="flow-2">
+  <div class="flow-modal">
+    <button type="button" class="flow-close" data-close>✕</button>
+    <div class="flow-title-bubble">Bài 2: Quy trình tóm tắt bài tập tìm kiếm và đánh giá thông tin học thuật</div>
+    <ol class="flow-steps">
+      <li><span class="flow-num">1</span>Xác định mục tiêu và phạm vi nghiên cứu</li>
+      <li><span class="flow-num">2</span>Triển khai tìm kiếm đa nguồn</li>
+      <li><span class="flow-num">3</span>Tổng hợp và thẩm định tài liệu</li>
+      <li><span class="flow-num">4</span>Phân tích đối chiếu và rút ra kết luận</li>
+    </ol>
+  </div>
+</div>
+
+<div class="flow-overlay" id="flow-3">
+  <div class="flow-modal">
+    <button type="button" class="flow-close" data-close>✕</button>
+    <div class="flow-title-bubble">Bài 3: Quy trình tóm tắt bài tập viết Prompt hiệu quả cho tác vụ học tập</div>
+    <ol class="flow-steps">
+      <li><span class="flow-num">1</span>Xác định các tác vụ học tập trọng tâm</li>
+      <li><span class="flow-num">2</span>Xây dựng và nâng cấp phiên bản prompt</li>
+      <li><span class="flow-num">3</span>Thử nghiệm và đối chiếu kết quả</li>
+      <li><span class="flow-num">4</span>Tổng kết nguyên tắc viết prompt hiệu quả</li>
+    </ol>
+  </div>
+</div>
+
+<div class="flow-overlay" id="flow-4">
+  <div class="flow-modal">
+    <button type="button" class="flow-close" data-close>✕</button>
+    <div class="flow-title-bubble">Bài 4: Tóm tắt bài tập công cụ hợp tác trực tuyến cho dự án nhóm</div>
+    <ol class="flow-steps">
+      <li><span class="flow-num">1</span>Thiết lập kênh liên lạc và họp khởi động</li>
+      <li><span class="flow-num">2</span>Quản lý danh mục công việc</li>
+      <li><span class="flow-num">3</span>Xây dựng nội dung đồng bộ</li>
+      <li><span class="flow-num">4</span>Lưu trữ và chia sẻ tài nguyên</li>
+      <li><span class="flow-num">5</span>Phân tích thách thức và thực hiện giải pháp tối ưu</li>
+    </ol>
+  </div>
+</div>
+
+<div class="flow-overlay" id="flow-5">
+  <div class="flow-modal">
+    <button type="button" class="flow-close" data-close>✕</button>
+    <div class="flow-title-bubble">Bài 5: Tóm tắt quy trình sử dụng AI tạo sinh để sáng tạo nội dung</div>
+    <ol class="flow-steps">
+      <li><span class="flow-num">1</span>Lên ý tưởng và sáng tạo nội dung văn bản</li>
+      <li><span class="flow-num">2</span>Tạo hình ảnh minh họa</li>
+      <li><span class="flow-num">3</span>Thiết kế và hoàn thiện sản phẩm</li>
+      <li><span class="flow-num">4</span>Đánh giá, đối chiếu và tinh chỉnh</li>
+      <li><span class="flow-num">5</span>Xem xét các vấn đề đạo đức và quy trình sáng tạo</li>
+    </ol>
+  </div>
+</div>
+
+<div class="flow-overlay" id="flow-6">
+  <div class="flow-modal">
+    <button type="button" class="flow-close" data-close>✕</button>
+    <div class="flow-title-bubble">Bài 6: Tóm tắt quy trình sử dụng AI có trách nhiệm trong học tập</div>
+    <ol class="flow-steps">
+      <li><span class="flow-num">1</span>Nghiên cứu chính sách và ranh giới đạo đức</li>
+      <li><span class="flow-num">2</span>Triển khai nhiệm vụ học tập với sự hỗ trợ của AI</li>
+      <li><span class="flow-num">3</span>Thẩm định, chỉnh sửa và cá nhân hóa đầu ra</li>
+      <li><span class="flow-num">4</span>Minh bạch hóa và thiết lập bộ nguyên tắc cá nhân</li>
+      <li><span class="flow-num">5</span>Trực quan hóa quy trình bằng Infographic</li>
+    </ol>
+  </div>
+</div>
+
+<script>
+  // mở / đóng modal quy trình chi tiết
+  document.querySelectorAll('.detail-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const overlay = document.getElementById(btn.getAttribute('data-flow'));
+      if(!overlay) return;
+      overlay.classList.add('show');
+      requestAnimationFrame(()=> overlay.classList.add('in'));
+      document.body.style.overflow = 'hidden';
+    });
+  });
+  function closeFlow(overlay){
+    overlay.classList.remove('in');
+    document.body.style.overflow = '';
+    setTimeout(()=> overlay.classList.remove('show'), 350);
+  }
+  document.querySelectorAll('.flow-overlay').forEach(overlay=>{
+    overlay.addEventListener('click', (e)=>{
+      if(e.target === overlay || e.target.hasAttribute('data-close')){ closeFlow(overlay); }
+    });
+  });
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape'){
+      document.querySelectorAll('.flow-overlay.show').forEach(closeFlow);
+    }
+  });
+</script>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  reveals.forEach((el,i)=>{ el.style.transitionDelay = (i % 6) * 0.07 + 's'; });
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){ entry.target.classList.add('in-view'); io.unobserve(entry.target); }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el=>io.observe(el));
+
+  const navLinks = document.querySelectorAll('.nav-link');
+  navLinks.forEach(link=>{
+    link.addEventListener('click',(e)=>{
+      const target = document.querySelector(link.getAttribute('href'));
+      if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth', block:'start'}); }
+    });
+  });
+
+  const sections = document.querySelectorAll('main section[id]');
+  const navIo = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const id = entry.target.getAttribute('id');
+        navLinks.forEach(l=>l.classList.toggle('active', l.getAttribute('href') === '#'+id));
+      }
+    });
+  }, { threshold: 0.35 });
+  sections.forEach(s=>navIo.observe(s));
+</script>
+</body>
+</html>
